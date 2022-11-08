@@ -1,0 +1,29 @@
+{
+  "name": "cjrasmussen/mastodon-api",
+  "description": "Simple helper for interacting with Mastodon's API",
+  "version": "1.0.0",
+  "keywords": ["Mastodon"],
+  "homepage": "https://www.clarkrasmussen.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Clark Rasmussen",
+      "homepage": "https://www.clarkrasmussen.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/cjrasmussen/MastodonApi/issues",
+    "source": "https://github.com/cjrasmussen/MastodonApi"
+  },
+  "require": {
+    "php": ">=7.4.0",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "cjrasmussen\\MastodonApi\\": "src/"
+    }
+  }
+}
