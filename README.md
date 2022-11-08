@@ -9,7 +9,7 @@ use cjrasmussen\MastodonApi\MastodonApi;
 
 $mastodon = new MastodonApi($server);
 
-// SEND A TOOT WITH OAUTH TOKEN/SECRET
+// SEND A TOOT WITH BEARER TOKEN
 $mastodon->setBearerToken($bearer_token);
 $response = $mastodon->request('POST', 'v1/statuses', ['status' => 'Toot text']);
 ```
