@@ -55,10 +55,6 @@ class MastodonApi
 
 		$url = 'https://' . $this->host . '/' . $directory . $request;
 
-		if ($multipart) {
-			$type = 'POST';
-		}
-
 		if (($type === 'GET') && (count($args))) {
 			$url .= '?' . http_build_query($args);
 		}

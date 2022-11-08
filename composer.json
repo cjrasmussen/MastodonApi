@@ -1,7 +1,7 @@
 {
   "name": "cjrasmussen/mastodon-api",
   "description": "Simple helper for interacting with Mastodon's API",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": ["Mastodon"],
   "homepage": "https://www.clarkrasmussen.com",
   "license": "MIT",
