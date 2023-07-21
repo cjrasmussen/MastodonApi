@@ -1,14 +1,14 @@
 {
   "name": "cjrasmussen/mastodon-api",
   "description": "Simple helper for interacting with Mastodon's API",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": ["Mastodon"],
-  "homepage": "https://www.clarkrasmussen.com",
+  "homepage": "https://cjr.dev",
   "license": "MIT",
   "authors": [
     {
       "name": "Clark Rasmussen",
-      "homepage": "https://www.clarkrasmussen.com",
+      "homepage": "https://cjr.dev",
       "role": "Developer"
     }
   ],
