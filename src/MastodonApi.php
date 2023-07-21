@@ -103,14 +103,12 @@ class MastodonApi
 		$response = curl_exec($c);
 		curl_close($c);
 
-		try {
-			$data = json_decode($response, false, 512, JSON_THROW_ON_ERROR);
-		} catch (Exception $e) {
-			$msg = 'Could not JSON decode API response: ' . $response;
+		if (!$response) {
+			$msg = 'No response from Mastodon API at ' . $this->host;
 			throw new RuntimeException($msg);
 		}
 
-		return $data;
+		return json_decode($response, false, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
