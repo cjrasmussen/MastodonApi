@@ -102,6 +102,7 @@ class MastodonApi
 			curl_setopt($c, CURLOPT_POSTFIELDS, $body);
 		} elseif (count($args)) {
 			if ($multipart) {
+				$header[] = 'Content-Type: multipart/form-data';
 				curl_setopt($c, CURLOPT_POSTFIELDS, $args);
 			} elseif ($type !== 'GET') {
 				$header[] = 'Content-Type: application/json';
