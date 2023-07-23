@@ -12,6 +12,7 @@ class MastodonApi
 {
 	private string $host;
 	private bool $useIdempotencyKey;
+	private ?int $httpVersion = null;
 	private ?string $bearer_token = null;
 
 	public function __construct(string $host, bool $useIdempotencyKey = false)
@@ -29,6 +30,19 @@ class MastodonApi
 	public function setBearerToken(?string $bearer_token = null): void
 	{
 		$this->bearer_token = $bearer_token;
+	}
+
+	/**
+	 * Set the HTTP version for requests
+	 *
+	 * Expects a valid constant value for CURLOPT_HTTP_VERSION.
+	 *
+	 * @param int|null $http_version
+	 * @return void
+	 */
+	public function setHttpVersion(?int $http_version = null): void
+	{
+		$this->httpVersion = $http_version;
 	}
 
 	/**
@@ -68,6 +82,10 @@ class MastodonApi
 
 		$c = curl_init();
 		curl_setopt($c, CURLOPT_URL, $url);
+
+		if ($this->httpVersion) {
+			curl_setopt($c, CURLOPT_HTTP_VERSION, $this->httpVersion);
+		}
 
 		switch ($type) {
 			case 'POST':
