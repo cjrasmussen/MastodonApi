@@ -2,7 +2,6 @@
 
 namespace cjrasmussen\MastodonApi;
 
-use Exception;
 use RuntimeException;
 
 /**
@@ -10,15 +9,29 @@ use RuntimeException;
  */
 class MastodonApi
 {
-	private string $host;
+	private ?string $host;
 	private bool $useIdempotencyKey;
 	private ?int $httpVersion = null;
-	private ?string $bearer_token = null;
+	private ?string $bearerToken = null;
 
-	public function __construct(string $host, bool $useIdempotencyKey = false)
+	public function __construct(?string $host = null, bool $useIdempotencyKey = false)
 	{
 		$this->host = $host;
 		$this->useIdempotencyKey = $useIdempotencyKey;
+	}
+
+	/**
+	 * @param string $host
+	 * @param bool|null $useIdempotencyKey
+	 * @return void
+	 */
+	public function initialize(string $host, ?bool $useIdempotencyKey = null): void
+	{
+		$this->host = $host;
+
+		if ($useIdempotencyKey !== null) {
+			$this->useIdempotencyKey = $useIdempotencyKey;
+		}
 	}
 
 	/**
@@ -29,7 +42,7 @@ class MastodonApi
 	 */
 	public function setBearerToken(?string $bearer_token = null): void
 	{
-		$this->bearer_token = $bearer_token;
+		$this->bearerToken = $bearer_token;
 	}
 
 	/**
@@ -54,10 +67,16 @@ class MastodonApi
 	 * @param string|null $body
 	 * @param bool $multipart
 	 * @return mixed|object
+	 * @throws RuntimeException
 	 * @throws \JsonException
 	 */
 	public function request(string $type, string $request, array $args = [], ?string $body = null, bool $multipart = false)
 	{
+		if ($this->host === null) {
+			$msg = 'Cannot execute API request without a host server defined.';
+			throw new RuntimeException($msg);
+		}
+
 		$request = trim($request, ' /');
 
 		$header = [];
@@ -65,8 +84,8 @@ class MastodonApi
 
 		if (!$this->requestIsOauth($request)) {
 			$directory = 'api/';
-			if ($this->bearer_token) {
-				$header[] = 'Authorization: Bearer ' . $this->bearer_token;
+			if ($this->bearerToken) {
+				$header[] = 'Authorization: Bearer ' . $this->bearerToken;
 			}
 		}
 
@@ -141,10 +160,16 @@ class MastodonApi
 	 * @param string $scope
 	 * @param string $code
 	 * @return string
+	 * @throws RuntimeException
 	 * @throws \JsonException
 	 */
 	public function requestBearerToken(string $client_id, string $client_secret, string $redirect_uri, string $scope, string $code): string
 	{
+		if ($this->host === null) {
+			$msg = 'Cannot execute API request without a host server defined.';
+			throw new RuntimeException($msg);
+		}
+
 		$c = curl_init();
 
 		curl_setopt_array($c, array(
