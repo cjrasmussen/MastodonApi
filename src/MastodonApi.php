@@ -127,6 +127,8 @@ class MastodonApi
 				$header[] = 'Content-Type: application/json';
 				curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($args, JSON_THROW_ON_ERROR));
 			}
+		} elseif ($type === 'POST') {
+			curl_setopt($c, CURLOPT_POSTFIELDS, null);
 		}
 
 		if (count($header)) {
