@@ -151,10 +151,20 @@ class MastodonApi
 		}
 
 		$response = curl_exec($c);
+		$curl_error = curl_errno($c);
 		curl_close($c);
 
-		if (!$response) {
+		$msg = null;
+		if ($curl_error === CURLE_OPERATION_TIMEDOUT) {
+			$msg = 'Request to Mastodon API at ' . $this->host . ' timed out';
+		} elseif (!$response) {
 			$msg = 'No response from Mastodon API at ' . $this->host;
+		} elseif (($response[0] !== '{') && (strpos($response, '<title>This page is not correct') !== false)) {
+			// RESPONDED WITH THE GENERIC ERROR PAGE
+			$msg = 'Request to Mastodon API at ' . $this->host . ' responded with an error';
+		}
+
+		if ($msg) {
 			throw new RuntimeException($msg);
 		}
 
