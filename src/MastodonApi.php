@@ -13,6 +13,7 @@ class MastodonApi
 	private bool $useIdempotencyKey;
 	private ?int $httpVersion = null;
 	private ?string $bearerToken = null;
+	private ?int $requestTimeout = null;
 
 	public function __construct(?string $host = null, bool $useIdempotencyKey = false)
 	{
@@ -56,6 +57,11 @@ class MastodonApi
 	public function setHttpVersion(?int $http_version = null): void
 	{
 		$this->httpVersion = $http_version;
+	}
+
+	public function setRequestTimeout(?int $timeout = null): void
+	{
+		$this->requestTimeout = $timeout;
 	}
 
 	/**
@@ -139,6 +145,10 @@ class MastodonApi
 		curl_setopt($c, CURLOPT_VERBOSE, 0);
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, 1);
+
+		if ($this->requestTimeout !== null) {
+			curl_setopt($c,CURLOPT_TIMEOUT, $this->requestTimeout);
+		}
 
 		$response = curl_exec($c);
 		curl_close($c);
